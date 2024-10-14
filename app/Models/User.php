@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',//adding role column to differentiate between student and teacher
     ];
 
     /**
@@ -45,4 +46,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    /** for teacher role */
+    public function courses() {
+        return $this->hasMany(Course::class, 'teacher_id');
+    }
+
+    /** for student role */
+    public function attendedCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user', 'student_id', 'course_id');
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class, 'student_id');
+    }
+
 }
