@@ -24,5 +24,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(50)->state([
             'role' => 'student'
         ])->create();
+
+        $this->call([
+            CourseSeeder::class,
+            // other seeders...
+        ]);
         }
+
+      
 }
