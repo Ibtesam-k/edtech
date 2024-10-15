@@ -63,5 +63,6 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+        $this->userRepository->delete($id);
     }
 }

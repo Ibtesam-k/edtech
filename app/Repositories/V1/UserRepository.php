@@ -23,16 +23,18 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->create($data);
     }
 
+  
     public function update($id, array $data) {
-        $user = $this->findById($id);
-        return $user->update($data);
+        $instance = $this->findById($id);
+        return $instance->update($data);
     }
 
     public function delete($id) {
-        return $this->model->destroy($id);
+        $instance = $this->findById($id);
+        $instance->delete();
+       
     }
-
     public function findById($id) {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 }
