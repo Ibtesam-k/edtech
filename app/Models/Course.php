@@ -9,6 +9,18 @@ class Course extends Model
 {
     use HasFactory;
 
+
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+       'title',
+        'description',
+        'teacher_id',
+    ];
+    
     /** course teacher */
     public function teacher() {
         return $this->belongsTo(User::class, 'teacher_id');
