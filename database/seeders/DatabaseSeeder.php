@@ -15,9 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
+        // Create 10 teachers
+        User::factory()->count(10)->state([
+            'role' => 'teacher'
+        ])->create();
+
+        // Create 50 students
+        User::factory()->count(50)->state([
+            'role' => 'student'
+        ])->create();
+        }
 }
