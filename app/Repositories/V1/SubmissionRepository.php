@@ -2,8 +2,10 @@
 namespace App\Repositories\V1;
 
 
-use App\Interfaces\SubmissionRepositoryInterface;
 use App\Models\Submission;
+use App\Models\SubmissionLog;
+use App\Interfaces\SubmissionRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class SubmissionRepository implements SubmissionRepositoryInterface
 {
@@ -11,7 +13,7 @@ class SubmissionRepository implements SubmissionRepositoryInterface
 
     public function __construct(Submission $submission)
     {
-        $this->model = $submission;
+        $this->model = $submission->with('student');
     }
 
     public function all() {
@@ -39,10 +41,18 @@ class SubmissionRepository implements SubmissionRepositoryInterface
     public function findById($id) {
         return $this->model->findOrFail($id);
     }
+
     public function bulkInsert(array $data) {
 
         $instance = $this->model->insert($data);
         
         return $instance;
     }
+
+    //not the best place
+    public function logs() {
+        return SubmissionLog::all();
+    }
+
+
 }

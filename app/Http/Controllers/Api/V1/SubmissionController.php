@@ -3,20 +3,25 @@
 namespace App\Http\Controllers\Api\V1;
 
 
+use App\Services\SubmissionLogger;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\SubmissionResource;
 use App\Http\Requests\V1\StoreSubmissionRequest;
 use App\Interfaces\SubmissionRepositoryInterface;
 use App\Http\Requests\V1\BulkStoreSubmissionRequest;
-
+use App\Http\Resources\V1\SubmissionLogResource;
+use Exception;
 
 class SubmissionController extends Controller
 {
     protected $submissionRepository;
+    protected $submissionLogger;
 
-    public function __construct(SubmissionRepositoryInterface $submissionRepository)
+    public function __construct(SubmissionRepositoryInterface $submissionRepository,SubmissionLogger $submissionLogger)
     {
         $this->submissionRepository= $submissionRepository;
+        $this->submissionLogger = $submissionLogger;
     }
     /**
      * Display a listing of the resource.
@@ -44,19 +49,18 @@ class SubmissionController extends Controller
      */
     public function blukStore(BulkStoreSubmissionRequest $request)
     {
-        // Validate the request and add submission timestamps
         $bulk = collect($request->validated()['submissions'])->map(function ($arr) {
             return array_merge($arr, ["submitted_at" => now()]);
         });
 
-        // Convert the submissions to an array for bulk insert
         $submissions = $bulk->toArray();
 
-        // Insert submissions into the database
         $this->submissionRepository->bulkInsert($submissions);
 
+        $this->submissionLogger->logSubmissions($submissions);
+
         return response()->json([
-            'message' => 'Submissions inserted successfully!',
+            'message' => 'Submissions processed successfully!',
         ], 200);
 }
 
@@ -76,5 +80,12 @@ class SubmissionController extends Controller
     public function destroy(string $id)
     {
         $this->submissionRepository->delete($id);
+    }
+
+    public function logs()
+    {
+        //
+        return SubmissionLogResource::collection($this->submissionRepository->logs());
+
     }
 }
