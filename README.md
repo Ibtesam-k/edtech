@@ -45,6 +45,7 @@ The project consists of the following models:
 - **Courses**: Each course is taught by a teacher and can be attended by multiple students, and each student can attend multiple courses.
 - **Assignments**: Each assignment belongs to a course.
 - **Submissions**: Each submissoin is defined by a user (student) and an assignment.
+- **Submission Logs**: Contains the results of logging submission data to external API.
 
 **CRUD operations for all models are implemented except for updating submissions (the student might delete the submission and upload new one).**
 
