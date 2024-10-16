@@ -1,9 +1,12 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\CourseController;
+use App\Http\Controllers\Api\V1\AssignmentController;
+
 
  Route::group([
 
@@ -23,8 +26,9 @@ use App\Http\Controllers\Api\V1\CourseController;
 
 
 
-Route::group(['prefix'=>'v1',"middleware"=>'jwtauth'], function ()
+Route::group(['prefix'=>'v1','namespace'=>'App\Http\Controllers\Api\V1',"middleware"=>'jwtauth'], function ()
 {
     Route::apiResource('users',UserController::class);
     Route::apiResource('courses',CourseController::class);
+    Route::apiResource('assignments',AssignmentController::class);
 });
