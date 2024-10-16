@@ -9,6 +9,22 @@ class Submission extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'submitted_at' => 'datetime',
+    ];
+   
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'assignment_id',
+         'student_id',
+         'submitted_at',
+         'file_path',
+     ];
+
      /**
      * A submission belongs to a student (User)
      */
