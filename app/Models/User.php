@@ -13,6 +13,9 @@ class User extends Authenticatable implements JWTSubject
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+      // Define role constants
+    const ROLE_STUDENT = 'student';
+    const ROLE_TEACHER = 'teacher';
     /**
      * The attributes that are mass assignable.
      *

@@ -2,11 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\RegisterUserRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Interfaces\UserRepositoryInterface;
 
 class AuthController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+    public function register(RegisterUserRequest $request)
+    {
+       
+        $validated = $request->validated();
+        $data = array_merge($validated, ['role' => "student"]);
+        $user = $this->userRepository->create($data);
+
+       
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json(compact('user','token'), 201);
+    }
+
 
     /**
      * Get a JWT via given credentials.

@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'role' => $this->faker->randomElement(['student', 'teacher']),  // Randomly assign role
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password ??= Hash::make('password123'),
             'remember_token' => Str::random(10),
         ];
     }

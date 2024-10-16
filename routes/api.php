@@ -8,20 +8,19 @@ use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\AssignmentController;
 use App\Http\Controllers\Api\V1\SubmissionController;
 
- Route::group([
+ Route::group([ 'middleware' => 'jwtauth', 'prefix' => 'auth',], function () {
 
-    'middleware' => 'jwtauth',
-    'prefix' => 'auth',
-
-], function () {
-
-    Route::post('login',  [AuthController::class, 'login'])->withoutMiddleware('jwtauth');
     Route::post('logout',  [AuthController::class, 'logout']);
     Route::post('refresh',  [AuthController::class, 'refresh']);
     Route::post('me',  [AuthController::class, 'me']);
 
 }); 
 
+Route::group([ 'prefix' => 'auth'], function () {
+
+    Route::post('login',  [AuthController::class, 'login']);
+    Route::post('register',  [AuthController::class, 'register']);
+}); 
 
 
 

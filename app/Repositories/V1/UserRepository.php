@@ -37,4 +37,9 @@ class UserRepository implements UserRepositoryInterface
     public function findById($id) {
         return $this->model->findOrFail($id);
     }
+
+    public function getUsersByRole($role)
+    {
+        return $this->model->where('role', $role)->get();
+    }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
 use App\Http\Requests\V1\StoreUserRequest;
 use App\Http\Requests\V1\UpdateUserRequest;
-use App\Http\Resources\V1\UserResource;
 use App\Interfaces\UserRepositoryInterface;
 
 class UserController extends Controller
@@ -21,9 +22,23 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $validRoles = [User::ROLE_STUDENT,User::ROLE_TEACHER];
+
+        $role = $request->query('role');
+      
+        if ($role && !in_array($role, $validRoles)) {
+            return response()->json([
+                'error' => 'Invalid role. Valid roles are: ' . implode(', ', $validRoles),
+            ], 400);
+        }
+        else if($role)
+        {
+            return UserResource::collection($this->userRepository->getUsersByRole($role));
+
+        }
         return UserResource::collection($this->userRepository->all());
     }
 
