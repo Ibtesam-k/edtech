@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\AssignmentController;
-
+use App\Http\Controllers\Api\V1\SubmissionController;
 
  Route::group([
 
@@ -31,4 +31,6 @@ Route::group(['prefix'=>'v1','namespace'=>'App\Http\Controllers\Api\V1',"middlew
     Route::apiResource('users',UserController::class);
     Route::apiResource('courses',CourseController::class);
     Route::apiResource('assignments',AssignmentController::class);
+    Route::apiResource('submissions',SubmissionController::class)->except(['update']);
+    Route::post('submissions/bulk',[SubmissionController::class, 'blukStore']);
 });
