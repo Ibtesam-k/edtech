@@ -67,14 +67,5 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], $e->getStatusCode());
             }
         });  
-        $exceptions->render(function (Throwable $e, Request $request) {
-            if ($request->is('api/*')) {
-                Log::error($e->getMessage());
-                return response()->json([
-                    'message' => "Someting went wrong!"
-                ],500);
-            }
-        }); 
-
-
+    
     })->create();
