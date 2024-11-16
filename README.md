@@ -74,6 +74,7 @@ The project consists of the following models:
 
 - Once you login, you can use the returned token to access the rest of the endpoints by adding it to Bearer token authorization.
 
+- You can run the tests using:
 
     ```bash
         php artisan test
